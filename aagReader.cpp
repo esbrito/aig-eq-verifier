@@ -121,7 +121,7 @@ Aig* AAGReader::readFile()
     //connecting ands
     debug << "\n";
 
-     cout << "Sat:" << '\n';
+     stringstream sat;
     for (int i = 0; i < nAnds; i++) {
         debug << "read the and" << i << " output and inputs\n";
         debug << "   connect the and" << i << " and set the inversion of this pins\n";
@@ -168,14 +168,13 @@ Aig* AAGReader::readFile()
             varC << "!var" << (atoi(nodes.at(0).c_str()) / 2);
             varC_neg << "var" << (atoi(nodes.at(0).c_str()) / 2);
         }
-        cout << "(" << varA.str() << "+" << varB.str() << "+" << varC.str() << ")" << "(" << varA_neg.str() << "+"<< varC_neg.str() << ")" << "("<< varB_neg.str() << "+"<< varC_neg.str() <<")";
+        sat << "(" << varA.str() << "+" << varB.str() << "+" << varC.str() << ")" << "(" << varA_neg.str() << "+"<< varC_neg.str() << ")" << "("<< varB_neg.str() << "+"<< varC_neg.str() <<")";
 
 
         left_vec.at(atoi(nodes.at(0).c_str())/2) = atoi(nodes.at(1).c_str());
         right_vec.at(atoi(nodes.at(0).c_str())/2) = atoi(nodes.at(2).c_str());
         
     }
-        cout << '\n';
 
   
  
@@ -205,6 +204,7 @@ Aig* AAGReader::readFile()
     aig->right = right_vec;
     aig->outs = outs_vec;
     aig->ins = ins_vec;
+    aig->sat = sat.str();
 
     return aig;
 }

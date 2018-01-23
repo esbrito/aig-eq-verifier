@@ -9,6 +9,7 @@
 #include <fstream>
 #include <sstream>
 #include <set>
+#include <algorithm>
 
 using namespace std;
 
@@ -61,6 +62,7 @@ public:
     std::vector<int> right;
     std::vector<int> outs;
     std::vector<int> ins;
+    string sat;
 
 };
 #endif
