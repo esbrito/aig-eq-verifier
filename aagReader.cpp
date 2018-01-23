@@ -120,6 +120,8 @@ Aig* AAGReader::readFile()
 
     //connecting ands
     debug << "\n";
+
+     cout << "Sat:" << '\n';
     for (int i = 0; i < nAnds; i++) {
         debug << "read the and" << i << " output and inputs\n";
         debug << "   connect the and" << i << " and set the inversion of this pins\n";
@@ -129,13 +131,51 @@ Aig* AAGReader::readFile()
         line >> word;
         std::vector<std::string> nodes = split(s, ' ');
 
+        stringstream varA;
+        stringstream varA_neg;
 
+        stringstream varB;
+        stringstream varB_neg;
+
+        stringstream varC;
+        stringstream varC_neg;
+
+
+        if(atoi(nodes.at(1).c_str()) % 2 == 0){
+            varA << "!var" << (atoi(nodes.at(1).c_str()) / 2);
+            varA_neg << "var" << (atoi(nodes.at(1).c_str()) / 2);
+
+        }else{
+            varA << "var" << (atoi(nodes.at(1).c_str()) / 2);
+            varA_neg << "!var" << (atoi(nodes.at(1).c_str()) / 2);
+        }
+
+        if(atoi(nodes.at(2).c_str()) % 2 == 0){
+            varB << "!var" << (atoi(nodes.at(2).c_str()) / 2);
+            varB_neg << "var" << (atoi(nodes.at(2).c_str()) / 2);
+
+        }else{
+            varB << "var" << (atoi(nodes.at(2).c_str()) / 2);
+            varB_neg << "!var" << (atoi(nodes.at(2).c_str()) / 2);
+
+        }
+
+        if(atoi(nodes.at(0).c_str()) % 2 == 0){
+            varC << "var" << (atoi(nodes.at(0).c_str()) / 2);
+            varC_neg << "!var" << (atoi(nodes.at(0).c_str()) / 2);
+
+        }else{
+            varC << "!var" << (atoi(nodes.at(0).c_str()) / 2);
+            varC_neg << "var" << (atoi(nodes.at(0).c_str()) / 2);
+        }
+        cout << "(" << varA.str() << "+" << varB.str() << "+" << varC.str() << ")" << "(" << varA_neg.str() << "+"<< varC_neg.str() << ")" << "("<< varB_neg.str() << "+"<< varC_neg.str() <<")";
 
 
         left_vec.at(atoi(nodes.at(0).c_str())/2) = atoi(nodes.at(1).c_str());
         right_vec.at(atoi(nodes.at(0).c_str())/2) = atoi(nodes.at(2).c_str());
         
     }
+        cout << '\n';
 
   
  
