@@ -1,0 +1,18 @@
+aag 5 2 0 1 3
+The file header is ok!
+
+read the input0 from the file
+   create in0 and add it to an input list and the all nodes list
+read the input1 from the file
+   create in1 and add it to an input list and the all nodes list
+
+read the output0 from the file
+   create out0 and add it to an output list and the all nodes list
+
+read the and0 output and inputs
+   connect the and0 and set the inversion of this pins
+read the and1 output and inputs
+   connect the and1 and set the inversion of this pins
+read the and2 output and inputs
+   connect the and2 and set the inversion of this pins
+
