@@ -2,7 +2,6 @@
 #define AAG_H
 
 #include "aagReader.h"
-#include "gerentebdd.h"
 
 std::vector<std::string> split(const std::string& s, char delimiter)
 {
@@ -27,7 +26,6 @@ Aig* AAGReader::readFile()
 {
 
     Aig* aig = new Aig();
-    gerentebdd g;
     //treating header
     source.getline(buf, 250, '\n');
     string s=buf;
@@ -60,10 +58,6 @@ Aig* AAGReader::readFile()
     }
 
     debug << s << "\nThe file header is ok!\n\n";
-
-    AigNode nodes[nNodes + 1];
-    AigNode outs[nOutputs];
-    AigNode ins[nInputs];
 
     aig->ni = nInputs;
     aig->no = nOutputs;
@@ -113,7 +107,6 @@ Aig* AAGReader::readFile()
         string s=buf;
         line.str(s);
         line >> word;
-       //cout << "##" << s  << "##" << "\n";
         std::vector<std::string> nodes = split(s, ' ');
         outs_vec.at(i) = (atoi(nodes.at(0).c_str()));
     }
@@ -121,7 +114,6 @@ Aig* AAGReader::readFile()
     //connecting ands
     debug << "\n";
 
-     stringstream sat;
     for (int i = 0; i < nAnds; i++) {
         debug << "read the and" << i << " output and inputs\n";
         debug << "   connect the and" << i << " and set the inversion of this pins\n";
@@ -131,45 +123,7 @@ Aig* AAGReader::readFile()
         line >> word;
         std::vector<std::string> nodes = split(s, ' ');
 
-        stringstream varA;
-        stringstream varA_neg;
-
-        stringstream varB;
-        stringstream varB_neg;
-
-        stringstream varC;
-        stringstream varC_neg;
-
-
-        if(atoi(nodes.at(1).c_str()) % 2 == 0){
-            varA << "!var" << (atoi(nodes.at(1).c_str()) / 2);
-            varA_neg << "var" << (atoi(nodes.at(1).c_str()) / 2);
-
-        }else{
-            varA << "var" << (atoi(nodes.at(1).c_str()) / 2);
-            varA_neg << "!var" << (atoi(nodes.at(1).c_str()) / 2);
-        }
-
-        if(atoi(nodes.at(2).c_str()) % 2 == 0){
-            varB << "!var" << (atoi(nodes.at(2).c_str()) / 2);
-            varB_neg << "var" << (atoi(nodes.at(2).c_str()) / 2);
-
-        }else{
-            varB << "var" << (atoi(nodes.at(2).c_str()) / 2);
-            varB_neg << "!var" << (atoi(nodes.at(2).c_str()) / 2);
-
-        }
-
-        if(atoi(nodes.at(0).c_str()) % 2 == 0){
-            varC << "var" << (atoi(nodes.at(0).c_str()) / 2);
-            varC_neg << "!var" << (atoi(nodes.at(0).c_str()) / 2);
-
-        }else{
-            varC << "!var" << (atoi(nodes.at(0).c_str()) / 2);
-            varC_neg << "var" << (atoi(nodes.at(0).c_str()) / 2);
-        }
-        sat << "(" << varA.str() << "+" << varB.str() << "+" << varC.str() << ")" << "(" << varA_neg.str() << "+"<< varC_neg.str() << ")" << "("<< varB_neg.str() << "+"<< varC_neg.str() <<")";
-
+      
 
         left_vec.at(atoi(nodes.at(0).c_str())/2) = atoi(nodes.at(1).c_str());
         right_vec.at(atoi(nodes.at(0).c_str())/2) = atoi(nodes.at(2).c_str());
@@ -204,7 +158,6 @@ Aig* AAGReader::readFile()
     aig->right = right_vec;
     aig->outs = outs_vec;
     aig->ins = ins_vec;
-    aig->sat = sat.str();
 
     return aig;
 }
