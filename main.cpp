@@ -10,11 +10,11 @@ int main()
 
     AigAux aigAux;
 
-    AAGReader reader("xor.aag");
+    AAGReader reader("C17.aag");
     Aig *aig = reader.readFile();
     aigAux.print_aig(aig);
 
-    AAGReader reader2("xorEq.aag");
+    AAGReader reader2("C17Eq.aag");
     Aig *aig2 = reader2.readFile();
     aigAux.print_aig(aig2);
     std::vector<string> sats =  aigAux.create_sats_eq_from_aig(aig, aig2);
@@ -40,7 +40,10 @@ int main()
         if (nd2 == nd1)
         {
             cout << "EQUAÇÃO DA SAIDA DO NÓ " << aig->outs.at(indexOut) /2 << " DE AMBOS AIGS SAO EQUIVALENTES"
+            << "\n"
+            << "\n"
             << "\n";
+
         }else
         {
             cout << "NAO EQUIVALENTES"
