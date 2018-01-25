@@ -298,16 +298,19 @@ std::vector<string> AigAux::create_sats_cnf_from_aig(Aig *aig, Aig *aig2)
         stringstream header;
         stringstream xorCompare;
 
-        header << "p cnf " << aig->na + aig->ni  + 1 << " " << 3*aig->na + 5 << "\n";
+      
 
-        xorCompare << "-" << aig->outs.at(indexOut) / 2 + 1000  <<  " -" << aig->outs.at(indexOut) / 2 + 2000  << " -" << "3000" << " 0\n" 
-        << "-" << aig->outs.at(indexOut) / 2 + 1000  << " "  << aig->outs.at(indexOut) / 2 +2000 <<  " " << "3000" << " 0\n"
-        << " " << aig->outs.at(indexOut) / 2 + 1000  << " -"  << aig->outs.at(indexOut) / 2 +2000 <<  " " << "3000" << " 0\n"
-        << " " << aig->outs.at(indexOut) / 2 + 1000  << " "  << aig->outs.at(indexOut) / 2 +2000 <<  " -" << "3000" << " 0\n"
-        << "3000" << " 0\n";
-        sats.push_back(getSatCnf(header.str(), aig, outNode, 1000)
-        .append(getSatCnf("", aig2, outNode, 2000)
-        .append(xorCompare.str())));
+        xorCompare << "-" << aig->outs.at(indexOut) / 2 + 0  <<  " -" << aig->outs.at(indexOut) / 2 + 1  << " -" <<  aig->outs.at(indexOut) / 2 + 2  << " 0\n" 
+        << "-" << aig->outs.at(indexOut) / 2 + 0  << " "  << aig->outs.at(indexOut) / 2 +1 <<  " " <<  aig->outs.at(indexOut) / 2 + 2  << " 0\n"
+        << " " << aig->outs.at(indexOut) / 2 + 0  << " -"  << aig->outs.at(indexOut) / 2 +1 <<  " " <<  aig->outs.at(indexOut) / 2 + 2  << " 0\n"
+        << " " << aig->outs.at(indexOut) / 2 + 0  << " "  << aig->outs.at(indexOut) / 2 +1 <<  " -" <<  aig->outs.at(indexOut) / 2 + 2 << " 0\n"
+        << aig->outs.at(indexOut) / 2 + 2 << " 0\n";
+        string all = getSatCnf("", aig, outNode, 0)
+        .append(getSatCnf("", aig2, outNode, 1)
+        .append(xorCompare.str()));
+        size_t n = std::count(all.begin(), all.end(), '\n');
+        header << "p cnf " <<  aig->outs.at(indexOut)/2  + 2 << " " << n << "\n";
+        sats.push_back(header.str().append(all));
     }
     return sats;
 }
